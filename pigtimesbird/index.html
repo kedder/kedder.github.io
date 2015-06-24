@@ -1,0 +1,89 @@
+<html ng-app="PigTimesBird">
+  <h1>
+    <meta charset="UTF-8" />
+
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      .problem {
+        font-size: 40pt;
+        font-weight: bold;
+      }
+
+      .answer, .check {
+        font-size: 40pt;
+        font-weight: bold;
+        width: 80pt;
+      }
+
+      .answerimg {
+        height: 40pt;
+        vertical-align: middle;
+      }
+
+      .prevproblem {
+        font-size: 20pt;
+      }
+      .prevproblem .answerimg {
+        height: 20pt;
+      }
+
+      .stats {
+        background-color: lime;
+        font-size: 14pt;
+        padding: 6pt;
+      }
+      .stats img {
+        height: 30pt;
+        vertical-align: middle;
+      }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+    <script src="game.js"></script>
+  </h1>
+  <body ng-controller="Game as game">
+    <h1>Свинку умножить на птичку.</h1>
+
+    <div class="stats">
+      Уровень: <img class="levelimg"
+      ng-repeat="n in range(level) track by $index"
+      src="king.png" />
+      <button ng-show="level < 8" ng-click="advance(1)">+</button>
+      <button ng-show="level > 1" ng-click="advance(-1)">-</button>
+      |
+      <img src="pig.png" /> {{stats.correct}}
+      |
+      <img src="bird.png" /> {{stats.incorrect}}
+      |
+      <button ng-click="newGame()">
+        <img src="restart.png" title="Заново" /></button>
+    </div>
+
+    <form action="#">
+      <div class='problem'>
+        {{problem.a}} &times; {{problem.b}} =
+        <input type='text' class="answer" ng-model="problem.x" size="2" />
+        <button class="check" ng-click="checkAnswer()">?</button>
+        <span ng-show="problem.correct" >
+          <img src="pig.png" class="answerimg" /> Yes!
+        </span>
+        <span ng-show="problem.incorrect" >
+          <img src="bird.png" class="answerimg" /> No! {{problem.answer}}!
+        </span>
+      </div>
+    </form>
+
+    <div class="prevproblem" ng-repeat="problem in previousProblems track by $index">
+      {{problem.a}} &times; {{problem.b}} = {{problem.x}}
+        <span ng-show="problem.correct" >
+          <img src="pig.png" class="answerimg" /> Yes!
+        </span>
+        <span ng-show="problem.incorrect" >
+          <img src="bird.png" class="answerimg" /> No! {{problem.answer}}!
+        </span>
+    </div>
+
+  </body>
+</html>
