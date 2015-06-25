@@ -6,19 +6,30 @@ app.controller("Game", function($scope, $timeout) {
     }
 
     function Problem() {
-        this.a = getRandomInt(1, $scope.level + 2);
-        this.b = getRandomInt(1, $scope.level + 2);
+        var a, b;
+        this.a = a = getRandomInt(1, $scope.level + 2);
+        this.b = b= getRandomInt(1, $scope.level + 2);
         this.x = null;
         this.correct = false;
         this.incorrect = false;
         this.answer = null;
+        this.id = Math.max(a, b) == b ? a + "x" + b : b + "x" + a;
 
         this.check = function() {
             this.answer = this.a * this.b;
             this.correct = this.answer == this.x;
             this.incorrect = !this.correct;
         }
+    }
 
+    function generateProblemCombinations() {
+        var combinations = [];
+        for (var i=1; i<10; i++) {
+            for (var j=i; j<10; j++) {
+                combinations.push(i+'x'+j);
+            }
+        }
+        return combinations;
     }
 
     function loadState() {
@@ -29,8 +40,10 @@ app.controller("Game", function($scope, $timeout) {
         $scope.level =
             JSON.parse(localStorage.getItem("level")) || $scope.level;
 
-        console.log($scope.previousProblems);
-        console.log($scope.stats);
+        if ($scope.stats.unsolved == undefined) {
+            $scope.stats.unsolved = generateProblemCombinations();
+            $scope.stats.goal = $scope.stats.unsolved.length;
+        }
     }
 
     function saveState() {
@@ -40,6 +53,7 @@ app.controller("Game", function($scope, $timeout) {
                              JSON.stringify($scope.stats));
         localStorage.setItem('level',
                              JSON.stringify($scope.level));
+
     }
 
     function newGame() {
@@ -52,14 +66,36 @@ app.controller("Game", function($scope, $timeout) {
             xp: 0
         }
         $scope.problem = new Problem();
+        $scope.stats.unsolved = generateProblemCombinations();
+        $scope.stats.goal = $scope.stats.unsolved.length;
+    }
+
+    function registerCorrect(problem) {
+        $scope.stats.correct++;
+
+        // Remove problem from unsolved set
+        var probidx = $scope.stats.unsolved.indexOf(problem.id);
+        if (probidx >= 0) {
+            $scope.stats.unsolved.splice(probidx, 1);
+        }
+    }
+
+    function registerIncorrect(problem) {
+        $scope.stats.incorrect++;
+
+        // Add problem to unsolved set
+        var probidx = $scope.stats.unsolved.indexOf(problem.id);
+        if (probidx === -1) {
+            $scope.stats.unsolved.push(problem.id);
+        }
     }
 
     function updateStats() {
         if ($scope.problem.correct) {
-            $scope.stats.correct++;
+            registerCorrect($scope.problem);
         }
         if ($scope.problem.incorrect) {
-            $scope.stats.incorrect++;
+            registerIncorrect($scope.problem);
         }
         $scope.problem.total++;
     }
@@ -100,5 +136,9 @@ app.controller("Game", function($scope, $timeout) {
     $scope.newGame = function() {
         newGame();
         saveState();
+    }
+
+    $scope.calcProgress = function() {
+        return (1 - $scope.stats.unsolved.length / $scope.stats.goal) * 100;
     }
 });

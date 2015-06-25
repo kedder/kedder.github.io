@@ -58,6 +58,7 @@
       |
       <img src="bird.png" /> {{stats.incorrect}}
       |
+      Крутость: {{calcProgress() | number : 0}}%
       <button ng-click="newGame()">
         <img src="restart.png" title="Заново" /></button>
     </div>
