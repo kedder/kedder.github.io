@@ -66,7 +66,7 @@
     <form action="#">
       <div class='problem'>
         {{problem.a}} &times; {{problem.b}} =
-        <input type='text' class="answer" ng-model="problem.x" size="2" />
+        <input type='number' class="answer" ng-model="problem.x" size="2" />
         <button class="check" ng-click="checkAnswer()">?</button>
         <span ng-show="problem.correct" >
           <img src="pig.png" class="answerimg" /> Yes!
