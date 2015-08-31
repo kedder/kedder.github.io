@@ -7,8 +7,18 @@ app.controller("Game", function($scope, $timeout) {
 
     function Problem() {
         var a, b;
-        this.b = b = getRandomInt(1, $scope.level + 2);
-        this.a = a = getRandomInt(1, $scope.level + 2);
+        a = getRandomInt(1, $scope.level + 2);
+        b = getRandomInt(1, 10);
+
+        if (Math.random() > 0.5) {
+            this.a = a;
+            this.b = b;
+        }
+        else {
+            this.b = a;
+            this.a = b;
+        }
+
         this.x = null;
         this.correct = false;
         this.incorrect = false;
