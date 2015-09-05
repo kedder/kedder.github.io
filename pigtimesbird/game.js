@@ -131,11 +131,12 @@ app.controller("Game", function($scope, $timeout) {
         $timeout(function() {
             $scope.problem = new Problem();
         }, 1000);
+        return false;
     }
 
     $scope.advance = function(inc) {
         $scope.level += inc;
-        $scope.problem = new Problem();
+        // $scope.problem = new Problem();
         saveState();
     }
 
