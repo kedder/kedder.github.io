@@ -31,7 +31,7 @@
       }
 
       .stats {
-        background-color: #00F0FC;
+        background-color: #99F0FC;
         font-size: 14pt;
         padding: 6pt;
       }
@@ -47,18 +47,18 @@
     <link rel="apple-touch-icon" sizes="196x196" href="favicon.png">
   </head>
   <body ng-controller="Game as game">
-    <h1>Свинку умножить на птичку - 2.0.</h1>
+    <h1>Свинку умножить на птичку - 3.0.</h1>
 
     <div class="stats">
       Уровень: <img class="levelimg"
       ng-repeat="n in range(level) track by $index"
-      src="egg.png" />
+      src="level.png" />
       <button ng-show="level < 9" ng-click="advance(1)">+</button>
       <button ng-show="level > 1" ng-click="advance(-1)">-</button>
       |
-      <img src="stella.png" /> {{stats.correct}}
+      <img src="wins.png" /> {{stats.correct}}
       |
-      <img src="hairedpig.png" /> {{stats.incorrect}}
+      <img src="loses.png" /> {{stats.incorrect}}
       |
       Крутость: {{calcProgress() | number : 0}}%
       <button ng-click="newGame()">
@@ -71,10 +71,10 @@
         <input type='number' class="answer" ng-model="problem.x" size="2" />
         <button class="check" ng-click="checkAnswer()">?</button>
         <span ng-show="problem.correct" >
-          <img src="stella.png" class="answerimg" /> Yes!
+          <img src="wins.png" class="answerimg" /> Yes!
         </span>
         <span ng-show="problem.incorrect" >
-          <img src="hairedpig.png" class="answerimg" /> No! {{problem.answer}}!
+          <img src="loses.png" class="answerimg" /> No! {{problem.answer}}!
         </span>
       </div>
     </form>
@@ -82,10 +82,10 @@
     <div class="prevproblem" ng-repeat="problem in previousProblems track by $index">
       {{problem.a}} &times; {{problem.b}} = {{problem.x}}
         <span ng-show="problem.correct" >
-          <img src="stella.png" class="answerimg" /> Yes!
+          <img src="wins.png" class="answerimg" /> Yes!
         </span>
         <span ng-show="problem.incorrect" >
-          <img src="hairedpig.png" class="answerimg" /> No! {{problem.answer}}!
+          <img src="loses.png" class="answerimg" /> No! {{problem.answer}}!
         </span>
     </div>
 
