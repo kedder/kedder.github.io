@@ -1,0 +1,91 @@
+<html>
+  <head>
+    <title>Свинья плюс арбуз</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+    <script src="game.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+      #app {
+        padding: 50px 50px;
+      }
+      .title {
+        font-size: 128pt;
+        font-weight: bold;
+      }
+      .title img {
+        vertical-align: middle;
+      }
+
+      .timer {
+        font-size: 64pt;
+        float: right;
+        border: 10px solid red;
+        padding: 20px;
+      }
+
+      form {
+        padding-top: 100px;
+        font-size: 100px;
+      }
+      form input {
+        font-size: 100px;
+        /*height: 100px;*/
+        width: 200px;
+      }
+
+      .results {
+        font-size: 32pt;
+      }
+      .results img {
+        vertical-align: middle;
+      }
+
+      .gameover {
+        background-image: url("lava.gif");
+      }
+
+      .restart-button button {
+        font-size: 32pt;
+      }
+    </style>
+  </head>
+
+  <html>
+    <h1>Свинья плюс арбуз</h1>
+    <div id="app"  v-bind:class="{ gameover: gameover }">
+      <div class="timer">
+        Время: {{timer.countdown}}
+        <div class="restart-button" v-if="!timer.started"><button v-on:click="restart">Заново</button></div>
+      </div>
+      <div class="title">
+        <img src="pig.png" height="200" />
+        +
+        <img src="poison.png" height="200" />
+        =
+        <img src="steve.png" height="200" />
+      </div>
+      <form v-on:submit.prevent="check">
+        {{problem.a}}
+        {{problem.op}}
+        {{problem.b}}
+        =
+        <input type="text" id="answer-input" name="answer" v-model="answer" v-on:input="changed" autofocus />
+
+      </form>
+
+      <div class="results">
+        {{correctCount}}:
+        <span v-for="correct in answers">
+          <img v-if="correct" src="gold.png" height="50" /><img v-if="!correct" src="coal.png" height="50" />
+        </span>
+      </div>
+
+    </div>
+  </html>
+
+  <script>
+    runGame();
+  </script>
+</html>
